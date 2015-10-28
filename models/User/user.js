@@ -16,6 +16,8 @@ var User = new Schema({
 });
 
 
+// OBOSOLETE
+// generaye hash for password
 User.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };

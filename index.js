@@ -2,6 +2,7 @@ var express    		= require("express");
 var mongoose   		= require("mongoose");
 var app        		= express();
 var User     		= require('./models/User/user');
+var Message     	= require('./models/Message/message');
 var BodyParser 		= require('body-parser');
 var cookieParser 	= require('cookie-parser');
 var passport 		= require('passport');
@@ -40,7 +41,6 @@ app.get('/users',function(req, res){
 	});
 });
 
-
 // Make match between current and targetted user
 app.post('/users/match', function(req, res){
 	var id_current 	= req.user.id;
@@ -56,6 +56,33 @@ app.post('/users/match', function(req, res){
 		});
 });
 
+// Make dislike between current and targetted user
+app.post('/users/dislike', function(req, res){
+	var id_current 	= req.user.id;
+	var id_target 	= req.body.id_target;
+	var	user        = User.findByIdAndUpdate(id_current,
+		{$push:
+			{matches:
+				{id: id_target, status: 2}
+			},function(err){
+				if(err) res.json({message: 'error'});
+				res.json({message: 'success'});
+			}});
+});
+
+// Return list of all matched users from current user
+app.get('/users/matched',function(res,req){
+	var id_current = req.user.id;
+	User.findById(id_current, 'matches', function(err, rep){
+		if(err) res.json({messsage: 'error'});
+		User.find({id: {$in: matched.matches}}, function(err, rep){
+			if(err) res.json({message: 'error'});
+			res.json({rep: rep});
+		});
+	});
+});
+
+
 // Get list of all user who are'nt in array users.match
 app.get('/users/unmatched', function(req, res){
 	var id_current 	= req.user.id;
@@ -66,6 +93,30 @@ app.get('/users/unmatched', function(req, res){
 			if(err) res.json({message: 'error'});
 			res.json({rep: rep});
 		});
+	});
+});
+
+// Get list of all message bewteen current user and specified user
+app.get('/users/messages', function(req, res){
+	var id_current	= req.user.id;
+	var id_target 	= req.body.id_target;
+	var messages 	= {};
+	Message.find({id_current: id_current, id_target: id_target}, function(err, rep){
+		if(err) res.json({message: 'error'});
+		res.send(rep);
+	});
+
+});
+
+// Send message from current user to specified user
+app.put('/users/message', function(req, res){
+	var id_current 	= req.user.id;
+	var id_target  	= req.body.id_target;
+	var message    	= req.body.message;
+	Message.find({id_current: id_current, id_target: id_target}, function(err, msg){
+		if(err) res.json({message: 'error'});
+		// Update Message collections, look for $push
+		
 	});
 });
 

@@ -7,3 +7,15 @@ div
 		label(for='id_target') id_target
 		input(id='id_target',type='text',value='', name='id_target')
 		input(type='submit' value='Match')
+
+
+
+div
+	form(action='/users/message', method='post')
+		label(for='id_current') id_current
+		input(id='id_current',type='text',value='',name='id_current')
+		label(for='id_target') id_target
+		input(id='id_target',type='text',value='',name='id_target')
+		label(for='message') Message
+		input(id='message',type='textarea', name='message')
+		input(type='submit', value='SendMess')
