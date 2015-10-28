@@ -1,0 +1,14 @@
+{
+  "name": "api-catinder",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "latest",
+    "mongoose": "^4.2.3",
+    "passport" : "latest",         
+    "passport-local" : "latest",    
+    "passport-facebook" : "latest", 
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
