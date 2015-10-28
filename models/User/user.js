@@ -9,6 +9,10 @@ var User = new Schema({
         email        : String,
         name         : String
     },
+    matches			 : [{
+    	id			 : String,
+    	status		 : Number
+    }]
 });
 
 
