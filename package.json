@@ -1,4 +1,6 @@
 {
+  "description": "Api apppli catinder",
+  "license": "MIT",
   "name": "api-catinder",
   "version": "0.0.1",
   "dependencies": {
