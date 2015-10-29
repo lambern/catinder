@@ -35,9 +35,10 @@ require('./route.js')(app, passport);
 
 // DEBUG Return list of all users
 app.get('/users',function(req, res){
-	User.find({}, function(err, rep){
+	User.findById(req.user.id, function(err, rep){
 		if(err) console.error(err);
 		res.json({user: rep});
+		// res.send('<img src="'+rep.facebook.photo+'">');
 	});
 });
 
