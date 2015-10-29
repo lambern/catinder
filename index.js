@@ -71,6 +71,20 @@ app.post('/users/dislike', function(req, res){
 			}});
 });
 
+// Block an user
+app.post('/users/block', function(req, res){
+	var id_current 	= req.user.id;
+	var id_target 	= req.body.id_target;
+	var user 		= User.findByIdAndUpdate(id_current,
+		{$push:
+			{matches:
+				{id: id_target, status: 3}
+			},
+			function(err){
+				if(err) res.json({message: 'error'});
+			}});
+});
+
 // Return list of all matched users from current user
 app.get('/users/matched',function(res,req){
 	var id_current = req.user.id;
@@ -99,9 +113,9 @@ app.get('/users/unmatched', function(req, res){
 
 // Get list of all message bewteen current user and specified user
 app.get('/users/messages', function(req, res){
-	var url = require('url');
-	var url_parts = url.parse(req.url, true);
-	var query = url_parts.query;
+	var url 		= require('url');
+	var url_parts 	= url.parse(req.url, true);
+	var query 		= url_parts.query;
 	
 	var id_current	= req.user.id;
 	var id_target 	= query.id_target;
