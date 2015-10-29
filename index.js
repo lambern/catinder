@@ -38,7 +38,6 @@ app.get('/users',function(req, res){
 	User.findById(req.user.id, function(err, rep){
 		if(err) console.error(err);
 		res.json({user: rep});
-		// res.send('<img src="'+rep.facebook.photo+'">');
 	});
 });
 
@@ -119,12 +118,25 @@ app.get('/users/messages', function(req, res){
 	
 	var id_current	= req.user.id;
 	var id_target 	= query.id_target;
-	var messages 	= {};
-	Message.find({id_current: id_current, id_target: id_target}, function(err, rep){
+	var allMessage 	= [];
+	
+	var msgSender = Message.find({id_current: id_current, id_target: id_target}, function(err, rep){
 		if(err) res.json({message: 'error'});
-		res.json({messages: rep});
+		rep.forEach(function(mess){
+			allMessage.push(mess);
+		});
+		var msgReceiver = Message.find({id_current: id_target, id_target: id_current}, function(err, rep){
+			if(err) res.json({message: 'error'});
+			// res.json({messages: rep});
+			rep.forEach(function(mess){
+				allMessage.push(mess);
+			});
+			allMessage.sort(function(a, b){
+				return a.raw.date - b.raw.date;
+			});
+			console.log('ALL ' + allMessage);
+		});
 	});
-
 });
 
 // Send message from current user to specified user
@@ -150,7 +162,7 @@ app.post('/users/message', function(req, res){
 		{
 			upsert: true
 		}, function(err){
-			if(err) console.error(err);//res.json({message: 'error'});
+			if(err) res.json({message: 'error'});
 			res.json({message: 'success'});
 		});
 });
