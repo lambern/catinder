@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Message = new Schema({
-   id_current: String,
-   id_target: String,
+   id_current		: String,
+   id_target		: String,
    raw: [{
-   		content: 	String,
-   		date: 		Date,
+   		content		: String,
+   		date 		: Date,
    }]
 });
 
